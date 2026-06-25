@@ -92,7 +92,7 @@ function render(){
   let rows=D.datasets.filter(r=>!q||r.dataset.toLowerCase().includes(q)||r.tm_best.toLowerCase().includes(q)||(r.kind||'').includes(q));
   rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];return (x>y?1:x<y?-1:0)*sortDir});
   document.getElementById('tb').innerHTML=rows.map((r,i)=>`<tr class="row" data-i="${D.datasets.indexOf(r)}">
-    <td>${r.dataset}</td><td><span class="pill">${(r.kind||'').slice(0,4)}</span></td><td>${r.C}</td>
+    <td><a href="datasets/${encodeURIComponent(r.dataset)}.html" onclick="event.stopPropagation()">${r.dataset}</a></td><td><span class="pill">${(r.kind||'').slice(0,4)}</span></td><td>${r.C}</td>
     <td>${r.tm_best}</td><td>${r.tm_f1.toFixed(3)}</td><td>${r.ml_best}</td><td>${r.ml_f1.toFixed(3)}</td>
     <td class="${r.delta>=0?'tm':'ml'}">${r.delta>=0?'+':''}${r.delta.toFixed(3)}</td>
     <td class="${r.winner=='TM'?'tm':'ml'}">${r.winner}</td></tr>`).join('');

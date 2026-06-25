@@ -5,6 +5,8 @@ against gradient-boosted ML across **148 datasets** (UCR time-series archive + c
 multi-class). Every booleanizer binarizes the *same* preprocessed split that the ML models
 see; the best feeds a **per-dataset-configured DeterministicTM**.
 
+**📄 Per-dataset results:** [results/datasets/INDEX.md](results/datasets/INDEX.md) — separate page for every dataset (top-5 booleanizers + ML).
+
 **📊 Live results (GitHub Pages):** enable Pages on `main` → `/docs`, then open the site —
 a searchable, sortable table with **per-dataset detail** (top-5 booleanizers, all booleanizers,
 ML models, winner) and a booleanizer leaderboard.
