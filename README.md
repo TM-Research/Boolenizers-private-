@@ -13,6 +13,7 @@ see; the best feeds a **per-dataset-configured DeterministicTM**.
   - [A · UCR time-series archive (116)](results/by_group/A_ucr_archive.md)
   - [B · Original 12 time-series](results/by_group/B_original_ts.md)
   - [C · Cyber / IDS multi-class (20)](results/by_group/C_cyber_ids.md)
+- **🏆 Best booleanizer by group:** [results/by_group/BEST_BOOLEANIZER_BY_GROUP.md](results/by_group/BEST_BOOLEANIZER_BY_GROUP.md) — A·UCR (ACFB), B·Original-TS (GLADEEncoder), C·Cyber-IDS (GLADEBooleanizer)
 - **📈 Combined report:** [results/TM_vs_ML_REPORT.md](results/TM_vs_ML_REPORT.md) · **booleanizer findings:** [results/SAQT_FINDINGS.md](results/SAQT_FINDINGS.md)
 - **🧩 Booleanizer source:** [Python (44)](booleanizers/python/) · [Julia SAQT/MWAB](booleanizers/julia/AdaptiveBooleanizers.jl) · **pipeline:** [pipeline/](pipeline/)
 
