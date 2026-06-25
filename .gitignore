@@ -1,0 +1,7 @@
+*.bin
+*.npz
+__pycache__/
+*.pyc
+data/
+data_multi/
+data_full/

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Booleanizers — Tsetlin Machine vs ML across 148 datasets</title>
+<style>
+  :root{--bg:#0d1117;--card:#161b22;--bd:#30363d;--fg:#e6edf3;--mut:#8b949e;--tm:#3fb950;--ml:#d29922;--ac:#58a6ff}
+  *{box-sizing:border-box}body{margin:0;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+  header{padding:28px 24px;border-bottom:1px solid var(--bd);background:linear-gradient(180deg,#161b22,#0d1117)}
+  h1{margin:0 0 6px;font-size:22px}.sub{color:var(--mut)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .stats{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+  .stat{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 16px;min-width:140px}
+  .stat b{font-size:22px;display:block}.stat span{color:var(--mut);font-size:12px}
+  .tabs{display:flex;gap:8px;margin:18px 0 10px}
+  .tab{padding:8px 16px;border:1px solid var(--bd);border-radius:8px;background:var(--card);cursor:pointer;color:var(--fg)}
+  .tab.on{border-color:var(--ac);color:var(--ac)}
+  input[type=search]{width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--bd);border-radius:8px;color:var(--fg);margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--bd);text-align:left}
+  th{color:var(--mut);cursor:pointer;user-select:none;position:sticky;top:0;background:var(--bg)}
+  tr.row{cursor:pointer}tr.row:hover{background:#1c2230}
+  .tm{color:var(--tm);font-weight:600}.ml{color:var(--ml);font-weight:600}
+  .pill{font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid var(--bd)}
+  .bar{height:8px;background:#21262d;border-radius:4px;overflow:hidden;display:inline-block;width:120px;vertical-align:middle}
+  .bar>i{display:block;height:100%;background:var(--ac)}
+  dialog{background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:12px;max-width:760px;width:92%;padding:0}
+  dialog::backdrop{background:rgba(0,0,0,.6)}
+  .dh{padding:18px 22px;border-bottom:1px solid var(--bd)}.db{padding:18px 22px;max-height:70vh;overflow:auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:8px 0 16px}
+  .kv{background:#0d1117;border:1px solid var(--bd);border-radius:8px;padding:8px 10px}.kv b{display:block;font-size:16px}.kv span{color:var(--mut);font-size:11px}
+  .b5{display:flex;align-items:center;gap:10px;margin:5px 0}
+  .b5 .nm{width:230px;font-size:13px}.b5 .v{width:48px;text-align:right;color:var(--mut)}
+  .close{float:right;cursor:pointer;color:var(--mut)}
+  a{color:var(--ac)} .note{background:#1c2128;border:1px solid var(--bd);border-left:3px solid var(--ml);border-radius:8px;padding:12px 14px;margin:14px 0;color:var(--mut);font-size:13px}
+  footer{color:var(--mut);font-size:12px;padding:24px;text-align:center}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Booleanizers — Tsetlin Machine vs gradient-boosted ML</h1>
+  <div class="sub">Every booleanizer binarizes the same preprocessed split; the best feeds a per-dataset-configured DeterministicTM. Compared to best of XGBoost / LightGBM / RandomForest / ExtraTrees. Metric = macro-F1.</div>
+  <div class="stats" id="stats"></div>
+</div></header>
+<div class="wrap">
+  <div class="note" id="caveat">
+    <b>Methodology notes:</b> UCR datasets use a stratified 70/30 split (not the canonical UCR split → scores read higher than published, but the TM-vs-ML comparison is fair); series &gt;512 points are decimated. Preprocessing fits on train only (no leakage); time-series use per-series z-normalization.
+  </div>
+  <div class="tabs">
+    <div class="tab on" data-t="ds">Datasets (<span id="nd"></span>)</div>
+    <div class="tab" data-t="bl">Booleanizers</div>
+  </div>
+  <div id="view-ds">
+    <input type="search" id="q" placeholder="Filter datasets… (name, booleanizer, kind)"/>
+    <table id="tbl"><thead><tr>
+      <th data-k="dataset">Dataset</th><th data-k="kind">kind</th><th data-k="C">C</th>
+      <th data-k="tm_best">TM best booleanizer</th><th data-k="tm_f1">TM F1</th>
+      <th data-k="ml_best">ML best</th><th data-k="ml_f1">ML F1</th>
+      <th data-k="delta">Δ</th><th data-k="winner">win</th>
+    </tr></thead><tbody id="tb"></tbody></table>
+  </div>
+  <div id="view-bl" style="display:none">
+    <table><thead><tr><th>Booleanizer</th><th>mean F1</th><th>in top-5</th><th>#wins (rank-1)</th></tr></thead><tbody id="blb"></tbody></table>
+  </div>
+</div>
+<dialog id="dlg"><div class="dh"><span class="close" onclick="dlg.close()">✕ close</span><h2 id="dt" style="margin:0"></h2><div class="sub" id="dsub"></div></div><div class="db" id="ddb"></div></dialog>
+<footer>Generated from the reproducible pipeline in <code>/pipeline</code>. 44 library booleanizers + SAQT/MWAB. See <a href="../README.md">README</a>.</footer>
+<script>
+let D, sortK='tm_f1', sortDir=-1;
+fetch('data.json').then(r=>r.json()).then(d=>{D=d;init()});
+function init(){
+  const s=D.summary;
+  document.getElementById('stats').innerHTML=[
+    ['# datasets',s.n_datasets],['TM ≥ ML',s.tm_ge_ml+' ('+Math.round(100*s.tm_ge_ml/s.n_datasets)+'%)'],
+    ['mean TM F1',s.mean_tm],['mean ML F1',s.mean_ml],
+    ['distinct winning booleanizers',s.distinct_winners],['booleanizers tested',s.distinct_booleanizers]
+  ].map(([a,b])=>`<div class="stat"><b>${b}</b><span>${a}</span></div>`).join('');
+  document.getElementById('nd').textContent=D.datasets.length;
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+    document.getElementById('view-ds').style.display=t.dataset.t=='ds'?'':'none';
+    document.getElementById('view-bl').style.display=t.dataset.t=='bl'?'':'none';
+  });
+  document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{
+    const k=th.dataset.k; sortDir=(sortK==k)?-sortDir:-1; sortK=k; render();});
+  document.getElementById('q').oninput=render;
+  blRender(); render();
+}
+function render(){
+  const q=document.getElementById('q').value.toLowerCase();
+  let rows=D.datasets.filter(r=>!q||r.dataset.toLowerCase().includes(q)||r.tm_best.toLowerCase().includes(q)||(r.kind||'').includes(q));
+  rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];return (x>y?1:x<y?-1:0)*sortDir});
+  document.getElementById('tb').innerHTML=rows.map((r,i)=>`<tr class="row" data-i="${D.datasets.indexOf(r)}">
+    <td>${r.dataset}</td><td><span class="pill">${(r.kind||'').slice(0,4)}</span></td><td>${r.C}</td>
+    <td>${r.tm_best}</td><td>${r.tm_f1.toFixed(3)}</td><td>${r.ml_best}</td><td>${r.ml_f1.toFixed(3)}</td>
+    <td class="${r.delta>=0?'tm':'ml'}">${r.delta>=0?'+':''}${r.delta.toFixed(3)}</td>
+    <td class="${r.winner=='TM'?'tm':'ml'}">${r.winner}</td></tr>`).join('');
+  document.querySelectorAll('tr.row').forEach(tr=>tr.onclick=()=>detail(D.datasets[+tr.dataset.i]));
+}
+function blRender(){
+  document.getElementById('blb').innerHTML=D.booleanizers.map(b=>`<tr><td>${b.name}</td>
+    <td>${b.mean_f1.toFixed(4)}</td><td>${b.top5}</td><td>${b.wins}</td></tr>`).join('');
+}
+function detail(r){
+  document.getElementById('dt').textContent=r.dataset;
+  document.getElementById('dsub').textContent=`${r.kind} · ${r.C} classes · ${r.n_train} train / ${r.n_test} test · ${r.n_features} features · imbalance ${r.imbalance}×`;
+  const mx=Math.max(r.tm_f1,...Object.values(r.ml_models||{}),0.001);
+  const b5=r.top5.map(([b,f])=>`<div class="b5"><div class="nm">${b}</div><div class="bar"><i style="width:${100*f/mx}%"></i></div><div class="v">${f.toFixed(3)}</div></div>`).join('');
+  const mls=Object.entries(r.ml_models||{}).map(([m,f])=>`<div class="b5"><div class="nm">${m}</div><div class="bar"><i style="width:${100*f/mx}%;background:var(--ml)"></i></div><div class="v">${f.toFixed(3)}</div></div>`).join('');
+  const all=r.allb.map(([b,f])=>`${b} ${f.toFixed(3)}`).join(' · ');
+  document.getElementById('ddb').innerHTML=`
+    <div class="grid">
+      <div class="kv"><b class="${r.winner=='TM'?'tm':'ml'}">${r.winner}</b><span>winner</span></div>
+      <div class="kv"><b>${r.tm_f1.toFixed(3)}</b><span>TM (best booleanizer)</span></div>
+      <div class="kv"><b>${r.ml_f1.toFixed(3)}</b><span>ML (best model)</span></div>
+      <div class="kv"><b class="${r.delta>=0?'tm':'ml'}">${r.delta>=0?'+':''}${r.delta.toFixed(3)}</b><span>Δ (TM−ML)</span></div>
+    </div>
+    <h3>Top-5 booleanizers (TM)</h3>${b5}
+    <h3>ML models</h3>${mls}
+    <h3>All booleanizers (${r.allb.length})</h3><div class="sub" style="font-size:12px">${all}</div>`;
+  document.getElementById('dlg').showModal();
+}
+</script>
+</body>
+</html>

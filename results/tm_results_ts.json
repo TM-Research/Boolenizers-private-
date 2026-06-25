@@ -1,0 +1,14 @@
+[
+  {"n_classes": 2, "ml_f1": 0.8703, "per_booleanizer": {"SAQT": 0.8845, "AQB": 0.881, "MWAB": 0.7948, "OQSB": 0.85, "NTEUniform": 0.881}, "tm_best_booleanizer": "SAQT", "dataset": "ECG200", "tm_f1": 0.8845},
+  {"n_classes": 5, "ml_f1": 0.6602, "per_booleanizer": {"SAQT": 0.6356, "AQB": 0.6399, "MWAB": 0.5944, "OQSB": 0.639, "NTEUniform": 0.6337}, "tm_best_booleanizer": "AQB", "dataset": "ECG5000", "tm_f1": 0.6399},
+  {"n_classes": 2, "ml_f1": 0.8232, "per_booleanizer": {"SAQT": 0.7973, "AQB": 0.7969, "MWAB": 0.7677, "OQSB": 0.7901, "NTEUniform": 0.7745}, "tm_best_booleanizer": "SAQT", "dataset": "FordA", "tm_f1": 0.7973},
+  {"n_classes": 2, "ml_f1": 0.9667, "per_booleanizer": {"SAQT": 0.95, "AQB": 0.9667, "MWAB": 0.9166, "OQSB": 0.9667, "NTEUniform": 0.9667}, "tm_best_booleanizer": "AQB", "dataset": "GunPoint", "tm_f1": 0.9667},
+  {"n_classes": 2, "ml_f1": 0.9696, "per_booleanizer": {"SAQT": 0.9635, "AQB": 0.9514, "MWAB": 0.9331, "OQSB": 0.9696, "NTEUniform": 0.9696}, "tm_best_booleanizer": "NTEUniform", "dataset": "ItalyPowerDemand", "tm_f1": 0.9696},
+  {"n_classes": 2, "ml_f1": 0.971, "per_booleanizer": {"SAQT": 0.9605, "AQB": 0.9657, "MWAB": 0.921, "OQSB": 0.9473, "NTEUniform": 0.9474}, "tm_best_booleanizer": "AQB", "dataset": "MoteStrain", "tm_f1": 0.9657},
+  {"n_classes": 7, "ml_f1": 0.9841, "per_booleanizer": {"SAQT": 0.9841, "AQB": 0.9841, "MWAB": 0.9689, "OQSB": 0.9841, "NTEUniform": 1.0}, "tm_best_booleanizer": "NTEUniform", "dataset": "Plane", "tm_f1": 1.0},
+  {"n_classes": 2, "ml_f1": 0.963, "per_booleanizer": {"SAQT": 0.9537, "AQB": 0.9629, "MWAB": 0.9259, "OQSB": 0.9444, "NTEUniform": 0.9722}, "tm_best_booleanizer": "NTEUniform", "dataset": "PowerCons", "tm_f1": 0.9722},
+  {"n_classes": 2, "ml_f1": 0.9946, "per_booleanizer": {"SAQT": 0.9891, "AQB": 0.9837, "MWAB": 0.9617, "OQSB": 0.9891, "NTEUniform": 0.9836}, "tm_best_booleanizer": "SAQT", "dataset": "SonyAIBORobotSurface1", "tm_f1": 0.9891},
+  {"n_classes": 4, "ml_f1": 0.9667, "per_booleanizer": {"SAQT": 0.9665, "AQB": 0.9833, "MWAB": 0.95, "OQSB": 0.9494, "NTEUniform": 1.0}, "tm_best_booleanizer": "NTEUniform", "dataset": "Trace", "tm_f1": 1.0},
+  {"n_classes": 2, "ml_f1": 0.9971, "per_booleanizer": {"SAQT": 0.9914, "AQB": 0.9885, "MWAB": 0.9742, "OQSB": 0.9885, "NTEUniform": 0.9885}, "tm_best_booleanizer": "SAQT", "dataset": "TwoLeadECG", "tm_f1": 0.9914},
+  {"n_classes": 2, "ml_f1": 0.9976, "per_booleanizer": {"SAQT": 0.9976, "AQB": 0.9988, "MWAB": 0.9915, "OQSB": 0.9939, "NTEUniform": 0.9976}, "tm_best_booleanizer": "AQB", "dataset": "Wafer", "tm_f1": 0.9988}
+]
