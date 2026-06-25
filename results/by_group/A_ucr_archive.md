@@ -1,5 +1,7 @@
 # UCR time-series archive
 
+
+> **Which booleanizer is best here?** See [A_ucr_best_booleanizer.md](A_ucr_best_booleanizer.md) — **ACFB** (top-5 on 29%, 14 rank-1 wins).
 **116 datasets** · TM ≥ ML on **84/116** (72%) · mean macro-F1 **TM 0.7768** vs **ML 0.7683** (Δ +0.0085)
 
 | Dataset | C | TM best booleanizer | TM F1 | ML best | ML F1 | Δ | winner |
