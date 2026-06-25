@@ -52,6 +52,16 @@
     <div class="tab" data-t="bl">Booleanizers</div>
   </div>
   <div id="view-ds">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+      <label class="sub">Group:</label>
+      <select id="grp" style="padding:8px 10px;background:var(--card);border:1px solid var(--bd);border-radius:8px;color:var(--fg)">
+        <option value="">All groups (kept separate below)</option>
+        <option value="UCR time-series archive">A · UCR time-series archive</option>
+        <option value="Original 12 time-series">B · Original 12 time-series</option>
+        <option value="Cyber / IDS multi-class">C · Cyber / IDS multi-class</option>
+      </select>
+      <span class="sub" id="gsum"></span>
+    </div>
     <input type="search" id="q" placeholder="Filter datasets… (name, booleanizer, kind)"/>
     <table id="tbl"><thead><tr>
       <th data-k="dataset">Dataset</th><th data-k="kind">kind</th><th data-k="C">C</th>
@@ -85,11 +95,21 @@ function init(){
   document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{
     const k=th.dataset.k; sortDir=(sortK==k)?-sortDir:-1; sortK=k; render();});
   document.getElementById('q').oninput=render;
+  document.getElementById('grp').onchange=render;
   blRender(); render();
+}
+function gstats(rows){
+  if(!rows.length)return '';
+  const ge=rows.filter(r=>r.winner=='TM').length;
+  const mtm=(rows.reduce((s,r)=>s+r.tm_f1,0)/rows.length).toFixed(3);
+  const mml=(rows.reduce((s,r)=>s+r.ml_f1,0)/rows.length).toFixed(3);
+  return `${rows.length} datasets · TM ≥ ML ${ge}/${rows.length} · mean TM ${mtm} / ML ${mml}`;
 }
 function render(){
   const q=document.getElementById('q').value.toLowerCase();
-  let rows=D.datasets.filter(r=>!q||r.dataset.toLowerCase().includes(q)||r.tm_best.toLowerCase().includes(q)||(r.kind||'').includes(q));
+  const g=document.getElementById('grp').value;
+  let rows=D.datasets.filter(r=>(!g||r.group==g)&&(!q||r.dataset.toLowerCase().includes(q)||r.tm_best.toLowerCase().includes(q)||(r.kind||'').includes(q)));
+  document.getElementById('gsum').textContent=gstats(g?rows:D.datasets);
   rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];return (x>y?1:x<y?-1:0)*sortDir});
   document.getElementById('tb').innerHTML=rows.map((r,i)=>`<tr class="row" data-i="${D.datasets.indexOf(r)}">
     <td><a href="datasets/${encodeURIComponent(r.dataset)}.html" onclick="event.stopPropagation()">${r.dataset}</a></td><td><span class="pill">${(r.kind||'').slice(0,4)}</span></td><td>${r.C}</td>
