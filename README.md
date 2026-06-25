@@ -15,6 +15,7 @@ see; the best feeds a **per-dataset-configured DeterministicTM**.
   - [C · Cyber / IDS multi-class (20)](results/by_group/C_cyber_ids.md)
 - **🏆 Best booleanizer by group:** [results/by_group/BEST_BOOLEANIZER_BY_GROUP.md](results/by_group/BEST_BOOLEANIZER_BY_GROUP.md) — A·UCR (ACFB), B·Original-TS (GLADEEncoder), C·Cyber-IDS (GLADEBooleanizer)
 - **📈 Combined report:** [results/TM_vs_ML_REPORT.md](results/TM_vs_ML_REPORT.md) · **booleanizer findings:** [results/SAQT_FINDINGS.md](results/SAQT_FINDINGS.md)
+- **🌊 Streaming IDS booleanizer (NEW):** research-designed adaptive booleanizer — [design spec](results/research/03_DESIGN_SPEC_streaming_IDS_booleanizer.md) · [results](results/research/04_STREAMING_IDS_RESULTS.md) · code in [booleanizers/streaming/](booleanizers/streaming/). **Beats XGBoost/LightGBM/RF under concept drift.**
 - **🧩 Booleanizer source:** [Python (44)](booleanizers/python/) · [Julia SAQT/MWAB](booleanizers/julia/AdaptiveBooleanizers.jl) · **pipeline:** [pipeline/](pipeline/)
 
 ## Headline results
