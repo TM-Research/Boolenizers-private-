@@ -5,11 +5,16 @@ against gradient-boosted ML across **148 datasets** (UCR time-series archive + c
 multi-class). Every booleanizer binarizes the *same* preprocessed split that the ML models
 see; the best feeds a **per-dataset-configured DeterministicTM**.
 
-**📄 Per-dataset results:** [results/datasets/INDEX.md](results/datasets/INDEX.md) — separate page for every dataset (top-5 booleanizers + ML).
+## 🔗 Links
 
-**📊 Live results (GitHub Pages):** enable Pages on `main` → `/docs`, then open the site —
-a searchable, sortable table with **per-dataset detail** (top-5 booleanizers, all booleanizers,
-ML models, winner) and a booleanizer leaderboard.
+- **🌐 Live site (GitHub Pages):** https://tm-research.github.io/Boolenizers-private-/ — searchable/sortable table, **group filter**, click any dataset for its **top-5 booleanizers + ML** detail page.
+- **📄 Per-dataset pages (Markdown):** [results/datasets/INDEX.md](results/datasets/INDEX.md) — a separate file per dataset (top-5 booleanizers + ML results).
+- **📊 Results by group (kept separate):**
+  - [A · UCR time-series archive (116)](results/by_group/A_ucr_archive.md)
+  - [B · Original 12 time-series](results/by_group/B_original_ts.md)
+  - [C · Cyber / IDS multi-class (20)](results/by_group/C_cyber_ids.md)
+- **📈 Combined report:** [results/TM_vs_ML_REPORT.md](results/TM_vs_ML_REPORT.md) · **booleanizer findings:** [results/SAQT_FINDINGS.md](results/SAQT_FINDINGS.md)
+- **🧩 Booleanizer source:** [Python (44)](booleanizers/python/) · [Julia SAQT/MWAB](booleanizers/julia/AdaptiveBooleanizers.jl) · **pipeline:** [pipeline/](pipeline/)
 
 ## Headline results
 
